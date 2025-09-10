@@ -24,8 +24,10 @@ public class LivrosModel {
     @Column(nullable = false)
     private String autor;
 
-    @Column(nullable = false)
     private String descricao;
+
+    @Column(nullable = false)
+    private boolean disponivel = true;
 
     @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EmprestimoModel> emprestimos;

@@ -39,6 +39,21 @@ public class UsuarioService {
                 .orElseThrow(() -> new RuntimeException("Usuario com ID "+id+" não encontrado"));
     }
 
+    //PUT - ID
+    public UsuarioModel atualizarUsuario(Long id, UsuarioModel usuarioModel) {
+        if (usuarioModel == null || id == null) {
+            throw new IllegalArgumentException("Usuario ou ID não pode ser nulo.");
+        }
+
+        UsuarioModel existente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario ou ID "+id+" não encontrado"));
+
+        existente.setNome(usuarioModel.getNome());
+        existente.setEmail(usuarioModel.getEmail());
+
+        return usuarioRepository.save(existente);
+    }
+
     //Regra - Delete - Id
     public void deletarUsuario(Long id) {
         if (!usuarioRepository.existsById(id)) {

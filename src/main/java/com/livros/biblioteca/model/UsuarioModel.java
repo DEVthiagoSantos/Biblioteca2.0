@@ -19,7 +19,7 @@ public class UsuarioModel {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
