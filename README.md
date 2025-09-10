@@ -1,2 +1,4 @@
-* BIBLIOTECA API *
-Essa API já está sendo testada
+* BIBLIOTECA API <br>
+
+* Atualizações <br>
+  Essa API já está sendo testada
