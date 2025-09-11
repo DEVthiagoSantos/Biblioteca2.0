@@ -8,3 +8,5 @@
   3 - API estava quase finalizada, mas agora está apresentando um bug que eu já imaginava, mas não sabia ao certo como resolver
   <br>
   4 - Consegui achar uma forma de resolver, e com isso aprendi que é uma pratica usar <em>DTOs</em> hahah, aiai 
+  <br>
+  5 - Fim, consegui finalizar, pelo menos até o momento sim, ainda estou aprendendo, e com certeza vou voltar aqui para fazer mais atualizações, então por enquanto, está finalizada essa API
