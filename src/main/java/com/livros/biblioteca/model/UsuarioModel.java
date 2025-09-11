@@ -1,5 +1,6 @@
 package com.livros.biblioteca.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 

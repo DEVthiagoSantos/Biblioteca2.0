@@ -1,5 +1,6 @@
 package com.livros.biblioteca.controller;
 
+import com.livros.biblioteca.dto.UsuarioDTO;
 import com.livros.biblioteca.model.UsuarioModel;
 import com.livros.biblioteca.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
@@ -19,34 +20,36 @@ public class UsuarioController {
 
     //POST
     @PostMapping
-    public ResponseEntity<UsuarioModel> criarUsuario(@RequestBody UsuarioModel usuarioModel) {
-        UsuarioModel usuario = usuarioService.criarUsuario(usuarioModel);
+    public ResponseEntity<UsuarioDTO> criarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO usuario = usuarioService.criarUsuarioDTO(
+                new UsuarioModel(null, usuarioDTO.nome(), usuarioDTO.email(), null)
+        );
         return ResponseEntity.status(201).body(usuario);
     }
 
     //GET
     @GetMapping
-    public ResponseEntity<List<UsuarioModel>> listarUsuarios() {
-        return ResponseEntity.ok(usuarioService.listarUsuario());
+    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.listarUsuarioDTO());
     }
 
     //GET - ID
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioModel> buscarUsuario(@PathVariable Long id) {
-        UsuarioModel usuario = usuarioService.buscarUsuarioPorId(id);
+    public ResponseEntity<UsuarioDTO> buscarUsuario(@PathVariable Long id) {
+        UsuarioDTO usuario = usuarioService.buscarUsuarioPorIdDTO(id);
         return ResponseEntity.ok(usuario);
     }
 
     //PUT - ID
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioModel> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioModel usuarioModel) {
-        UsuarioModel usuario = usuarioService.atualizarUsuario(id, usuarioModel);
+    public ResponseEntity<UsuarioDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO usuario = usuarioService.atualizarUsuarioDTO(id, usuarioDTO);
         return ResponseEntity.ok(usuario);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
-        usuarioService.deletarUsuario(id);
+        usuarioService.deletarUsuarioDTO(id);
         return ResponseEntity.noContent().build();
     }
 }

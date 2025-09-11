@@ -1,5 +1,7 @@
 package com.livros.biblioteca.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.livros.biblioteca.status.EmprestimoStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,10 +23,12 @@ public class EmprestimoModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "livros_id") // coluna que vai armazenar a FK
+    @JsonIgnoreProperties("emprestimos")
     private LivrosModel livro;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
+    @JsonIgnoreProperties("emprestimos")
     private UsuarioModel usuario;
 
     @Column(nullable = false, updatable = false)

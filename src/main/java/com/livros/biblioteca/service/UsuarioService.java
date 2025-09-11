@@ -1,5 +1,6 @@
 package com.livros.biblioteca.service;
 
+import com.livros.biblioteca.dto.UsuarioDTO;
 import com.livros.biblioteca.model.UsuarioModel;
 import com.livros.biblioteca.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,14 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    public UsuarioDTO toDTO(UsuarioModel usuarioModel){
+        return new UsuarioDTO(
+                usuarioModel.getId(),
+                usuarioModel.getNome(),
+                usuarioModel.getEmail()
+        );
+    }
+
     // Regra - POST
     public UsuarioModel criarUsuario(UsuarioModel usuarioModel) {
         if (usuarioModel == null || usuarioModel.getEmail() == null) {
@@ -24,9 +33,21 @@ public class UsuarioService {
         return usuarioRepository.save(usuarioModel);
     }
 
+    // Regra - POST DTO
+    public UsuarioDTO criarUsuarioDTO(UsuarioModel usuarioModel) {
+        return toDTO(criarUsuario(usuarioModel));
+    }
+
     // Regra - Get
     public List<UsuarioModel> listarUsuario() {
         return usuarioRepository.findAll();
+    }
+    // Regra = Get DTO
+    public List<UsuarioDTO> listarUsuarioDTO() {
+        return listarUsuario()
+                .stream()
+                .map(this::toDTO)
+                .toList();
     }
 
     // Regra - Get (id)
@@ -37,6 +58,10 @@ public class UsuarioService {
 
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario com ID "+id+" não encontrado"));
+    }
+    // Regra - Get (id)DTO
+    public UsuarioDTO buscarUsuarioPorIdDTO(Long id) {
+        return toDTO(buscarUsuarioPorId(id));
     }
 
     //PUT - ID
@@ -54,6 +79,17 @@ public class UsuarioService {
         return usuarioRepository.save(existente);
     }
 
+    //PUT - ID DTO
+    public UsuarioDTO atualizarUsuarioDTO(Long id, UsuarioDTO usuarioDTO) {
+        UsuarioModel existente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario com ID "+id+" não encontrado"));
+
+        existente.setNome(usuarioDTO.nome());
+        existente.setEmail(usuarioDTO.email());
+
+        return toDTO(usuarioRepository.save(existente));
+    }
+
     //Regra - Delete - Id
     public void deletarUsuario(Long id) {
         if (!usuarioRepository.existsById(id)) {
@@ -61,6 +97,11 @@ public class UsuarioService {
         }
 
         usuarioRepository.deleteById(id);
+    }
+    // Regra - Delete - Id DTO
+    public String deletarUsuarioDTO(Long id) {
+        deletarUsuario(id);
+        return "Usuário com ID "+ id +" foi deletado com sucesso.";
     }
 
 }

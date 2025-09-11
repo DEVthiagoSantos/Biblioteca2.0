@@ -1,5 +1,6 @@
 package com.livros.biblioteca.service;
 
+import com.livros.biblioteca.dto.EmprestimoDTO;
 import com.livros.biblioteca.model.EmprestimoModel;
 import com.livros.biblioteca.model.LivrosModel;
 import com.livros.biblioteca.model.UsuarioModel;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -26,6 +26,21 @@ public class EmprestimoService {
         this.livrosRepository = livrosRepository;
         this.usuarioRepository = usuarioRepository;
     }
+
+    public EmprestimoDTO toDTO(EmprestimoModel emprestimo) {
+        return new EmprestimoDTO(
+                emprestimo.getId(),
+                emprestimo.getLivro().getTitulo(),
+                emprestimo.getLivro().getAutor(),
+                emprestimo.getUsuario().getNome(),
+                emprestimo.getUsuario().getEmail(),
+                emprestimo.getDataEmprestimo(),
+                emprestimo.getDataDevolucaoPrevista(),
+                emprestimo.getDataDevolucaoReal(),
+                emprestimo.getStatus()
+        );
+    }
+
 
     // POST
     public EmprestimoModel criarEmprestimo(Long idLivro, Long idUsuario){
@@ -58,6 +73,11 @@ public class EmprestimoService {
         return emprestimoRepository.save(emprestimoModel);
     }
 
+    // POST: cria empréstimo e retorna DTO
+    public EmprestimoDTO criarEmprestimoDTO(Long idLivro, Long idUsuario) {
+        return toDTO(criarEmprestimo(idLivro, idUsuario));
+    }
+
     // PUT
     public EmprestimoModel finalizarEmprestimo(Long idEmprestimo) {
         if (idEmprestimo == null) {
@@ -81,6 +101,11 @@ public class EmprestimoService {
         return emprestimoRepository.save(emprestimo);
     }
 
+    // PUT: finaliza empréstimo e retorna DTO
+    public EmprestimoDTO finalizarEmprestimoDTO(Long idEmprestimo) {
+        return toDTO(finalizarEmprestimo(idEmprestimo));
+    }
+
     // GET
     public List<EmprestimoModel> listarEmprestimos() {
         if (emprestimoRepository.count() == 0) {
@@ -88,5 +113,12 @@ public class EmprestimoService {
         }
 
         return emprestimoRepository.findAll();
+    }
+
+    public List<EmprestimoDTO> listarEmprestimosDTO() {
+        return listarEmprestimos()
+                .stream()
+                .map(this::toDTO)
+                .toList();
     }
 }
