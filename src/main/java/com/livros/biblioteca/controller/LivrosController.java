@@ -1,5 +1,6 @@
 package com.livros.biblioteca.controller;
 
+import com.livros.biblioteca.dto.LivrosDTO;
 import com.livros.biblioteca.model.LivrosModel;
 import com.livros.biblioteca.service.LivrosService;
 import org.springframework.http.ResponseEntity;
@@ -19,35 +20,35 @@ public class LivrosController {
 
     // POST
     @PostMapping
-    public ResponseEntity<LivrosModel> adicionarLivros(@RequestBody LivrosModel livrosModel) {
-        LivrosModel livro = livrosService.adicionarLivro(livrosModel);
+    public ResponseEntity<LivrosDTO> adicionarLivros(@RequestBody LivrosDTO livrosModel) {
+        LivrosDTO livro = livrosService.adicionarLivroDTO(livrosModel);
         return ResponseEntity.status(201).body(livro);
     }
 
     // GET
     @GetMapping
-    public ResponseEntity<List<LivrosModel>> listarLivros() {
-        return ResponseEntity.ok(livrosService.listarLivros());
+    public ResponseEntity<List<LivrosDTO>> listarLivros() {
+        return ResponseEntity.ok(livrosService.listarLivrosDTO());
     }
 
     //GET - ID
     @GetMapping("/{id}")
-    public ResponseEntity<LivrosModel> listarLivroPorId(@PathVariable Long id) {
-        LivrosModel livro = livrosService.listarLivroPorId(id);
+    public ResponseEntity<LivrosDTO> listarLivroPorId(@PathVariable Long id) {
+        LivrosDTO livro = livrosService.listarLivroPorIdDTO(id);
         return ResponseEntity.ok(livro);
     }
 
     //PUT - ID
     @PutMapping("/{id}")
-    public ResponseEntity<LivrosModel> atualizarLivro(@PathVariable Long id, @RequestBody LivrosModel livrosModel) {
-        LivrosModel livro = livrosService.atualizarLivro(id, livrosModel);
+    public ResponseEntity<LivrosDTO> atualizarLivro(@PathVariable Long id, @RequestBody LivrosDTO livrosDTO) {
+        LivrosDTO livro = livrosService.atualizarLivroDTO(id, livrosDTO);
         return ResponseEntity.ok(livro);
     }
 
     //DELETE - ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removerLivro(@PathVariable Long id) {
-        livrosService.removerLivroPorId(id);
+        livrosService.removerLivroPorIdDTO(id);
         return ResponseEntity.noContent().build();
     }
 

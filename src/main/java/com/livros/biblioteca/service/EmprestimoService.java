@@ -87,7 +87,7 @@ public class EmprestimoService {
         EmprestimoModel emprestimo = emprestimoRepository.findById(idEmprestimo)
                 .orElseThrow(() -> new RuntimeException("Emprestimo com ID "+idEmprestimo+" não encontrado"));
 
-        if (emprestimo.getStatus().equals(EmprestimoStatus.ATIVO)) {
+        if (!emprestimo.getStatus().equals(EmprestimoStatus.ATIVO)) {
             throw new RuntimeException("Emprestimo já foi finalizado");
         }
 
